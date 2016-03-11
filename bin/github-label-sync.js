@@ -20,6 +20,10 @@ program
 		'the path to look for the label configuration in. Default: labels.json',
 		'labels.json'
 	)
+	.option(
+		'-d, --dry-run',
+		'calculate the required label changes but do not apply them'
+	)
 	.parse(process.argv);
 
 // Make sure we have exactly one argument – the repo
@@ -44,6 +48,7 @@ try {
 // Pull together all the options
 const options = {
 	accessToken: program.accessToken,
+	dryRun: program.dryRun,
 	labels: labels,
 	log: console,
 	repo: program.args[0]

@@ -53,6 +53,10 @@ describe('lib/github-label-sync', () => {
 			assert.isNull(defaults.accessToken);
 		});
 
+		it('should have a `dryRun` property', () => {
+			assert.isFalse(defaults.dryRun);
+		});
+
 		it('should have a `labels` property', () => {
 			assert.isArray(defaults.labels);
 		});
@@ -225,11 +229,9 @@ describe('lib/github-label-sync', () => {
 			});
 
 			describe('.then()', () => {
-				let resolvedValue;
 
 				beforeEach((done) => {
-					returnedPromise.then((value) => {
-						resolvedValue = value;
+					returnedPromise.then(() => {
 						done();
 					}).catch(done);
 				});
@@ -237,6 +239,35 @@ describe('lib/github-label-sync', () => {
 				it('should log that labels were up to date', () => {
 					assert.calledWith(log.info, 'Labels are already up to date');
 					assert.neverCalledWith(log.info, 'Labels updated');
+				});
+
+			});
+
+		});
+
+		describe('when the `dryRun` option is `true`', () => {
+
+			beforeEach(() => {
+				options.dryRun = true;
+				actionLabelDiff.reset();
+				Promise.all.reset();
+				returnedPromise = githubLabelSync(options);
+			});
+
+			describe('.then()', () => {
+
+				beforeEach((done) => {
+					returnedPromise.then(() => {
+						done();
+					}).catch(done);
+				});
+
+				it('should not convert the returned diff to promises', () => {
+					assert.notCalled(actionLabelDiff);
+				});
+
+				it('should not execute any diff promises', () => {
+					assert.notCalled(Promise.all, labelDiffActions);
 				});
 
 			});
