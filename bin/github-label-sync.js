@@ -17,8 +17,8 @@ program
 	)
 	.option(
 		'-l, --labels <path>',
-		'the path to look for the label configuration in. Default: ./.labels',
-		'.labels'
+		'the path to look for the label configuration in. Default: labels.json',
+		'labels.json'
 	)
 	.parse(process.argv);
 
