@@ -207,10 +207,38 @@ describe('lib/github-label-sync', () => {
 
 			it('should log success', () => {
 				assert.calledWith(log.info, 'Labels updated');
+				assert.neverCalledWith(log.info, 'Labels are already up to date');
 			});
 
 			it('should resolve with the label diff', () => {
 				assert.strictEqual(resolvedValue, labelDiff);
+			});
+
+		});
+
+		describe('when no labels need to be updated', () => {
+
+			beforeEach(() => {
+				log.info.reset();
+				actionLabelDiff.returns([]);
+				returnedPromise = githubLabelSync(options);
+			});
+
+			describe('.then()', () => {
+				let resolvedValue;
+
+				beforeEach((done) => {
+					returnedPromise.then((value) => {
+						resolvedValue = value;
+						done();
+					}).catch(done);
+				});
+
+				it('should log that labels were up to date', () => {
+					assert.calledWith(log.info, 'Labels are already up to date');
+					assert.neverCalledWith(log.info, 'Labels updated');
+				});
+
 			});
 
 		});
