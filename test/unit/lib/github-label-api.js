@@ -109,6 +109,11 @@ describe('lib/github-label-api', () => {
 							assert.strictEqual(caughtError, apiClientError);
 						});
 
+						it('should augment the API client error with request information', () => {
+							assert.strictEqual(caughtError.method, 'GET');
+							assert.strictEqual(caughtError.endpoint, `/repos/${repo}/labels`);
+						});
+
 					});
 
 				});
@@ -201,6 +206,11 @@ describe('lib/github-label-api', () => {
 
 						it('should fail with the API client error', () => {
 							assert.strictEqual(caughtError, apiClientError);
+						});
+
+						it('should augment the API client error with request information', () => {
+							assert.strictEqual(caughtError.method, 'POST');
+							assert.strictEqual(caughtError.endpoint, `/repos/${repo}/labels`);
 						});
 
 					});
@@ -298,6 +308,11 @@ describe('lib/github-label-api', () => {
 							assert.strictEqual(caughtError, apiClientError);
 						});
 
+						it('should augment the API client error with request information', () => {
+							assert.strictEqual(caughtError.method, 'PATCH');
+							assert.strictEqual(caughtError.endpoint, `/repos/${repo}/labels/baz%20qux`);
+						});
+
 					});
 
 				});
@@ -389,6 +404,11 @@ describe('lib/github-label-api', () => {
 
 						it('should fail with the API client error', () => {
 							assert.strictEqual(caughtError, apiClientError);
+						});
+
+						it('should augment the API client error with request information', () => {
+							assert.strictEqual(caughtError.method, 'DELETE');
+							assert.strictEqual(caughtError.endpoint, `/repos/${repo}/labels/baz%20qux`);
 						});
 
 					});

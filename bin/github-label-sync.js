@@ -72,6 +72,10 @@ const options = {
 // Sync the labels!
 console.log(chalk.cyan.underline(`Syncing labels for "${options.repo}"`));
 githubLabelSync(options).catch((error) => {
-	console.error(error.stack || error.message);
+	if (error.endpoint) {
+		console.log(chalk.red(`GitHub Error:\n${error.method} ${error.endpoint}\n${error.statusCode}: ${error.message}`));
+	} else {
+		console.error(chalk.red(error.stack || error.message));
+	}
 	process.exit(1);
 });
