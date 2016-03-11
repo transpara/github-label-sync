@@ -1,0 +1,305 @@
+'use strict';
+
+const assert = require('proclaim');
+
+describe('lib/calculate-label-diff', () => {
+	let calculateLabelDiff;
+
+	beforeEach(() => {
+		calculateLabelDiff = require('../../../lib/calculate-label-diff');
+	});
+
+	it('should export a function', () => {
+		assert.isFunction(calculateLabelDiff);
+	});
+
+	describe('calculateLabelDiff(currentLabels, configuredLabels)', () => {
+		let configuredLabels;
+		let currentLabels;
+		let diff;
+
+		it('should return an array', function() {
+			assert.isArray(calculateLabelDiff([], []));
+		});
+
+		describe('when a configured label does not exist in the current labels', () => {
+
+			beforeEach(() => {
+				currentLabels = [];
+				configuredLabels = [
+					{
+						name: 'bar',
+						color: '00ff00'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add a "missing" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'bar',
+					type: 'missing',
+					actual: null,
+					expected: {
+						name: 'bar',
+						color: '00ff00'
+					}
+				});
+			});
+
+		});
+
+		describe('when a configured label exists in the current labels with no changes', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should not add an entry to the returned diff', () => {
+				assert.lengthEquals(diff, 0);
+			});
+
+		});
+
+		describe('when a configured label exists in the current labels but has changes', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'foo',
+						color: '00ff00'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add a "changed" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'foo',
+					type: 'changed',
+					actual: {
+						name: 'foo',
+						color: 'ff0000'
+					},
+					expected: {
+						name: 'foo',
+						color: '00ff00'
+					}
+				});
+			});
+
+		});
+
+		describe('when a configured label exists in the current labels but has case changes only', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'FOO',
+						color: 'ff0000'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add a "changed" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'FOO',
+					type: 'changed',
+					actual: {
+						name: 'FOO',
+						color: 'ff0000'
+					},
+					expected: {
+						name: 'foo',
+						color: 'ff0000'
+					}
+				});
+			});
+
+		});
+
+		describe('when a configured label alias exists in the current labels', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'bar',
+						color: '00ff00',
+						aliases: [
+							'foo'
+						]
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add a "changed" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'foo',
+					type: 'changed',
+					actual: {
+						name: 'foo',
+						color: 'ff0000'
+					},
+					expected: {
+						name: 'bar',
+						color: '00ff00'
+					}
+				});
+			});
+
+		});
+
+		describe('when a current label does not exist in the configured labels', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				configuredLabels = [];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add an "added" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'foo',
+					type: 'added',
+					actual: {
+						name: 'foo',
+						color: 'ff0000'
+					},
+					expected: null
+				});
+			});
+
+		});
+
+		describe('when a range of diffs are expected', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'pub',
+						color: '00ff00'
+					},
+					{
+						name: 'baz',
+						color: 'ffffff'
+					},
+					{
+						name: 'qux',
+						color: '000000'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					},
+					{
+						name: 'bar',
+						color: '00ff00',
+						aliases: [
+							'pub'
+						]
+					},
+					{
+						name: 'baz',
+						color: '0000ff'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add all of the expected entries to the returned diff', () => {
+				assert.lengthEquals(diff, 4);
+				assert.deepEqual(diff, [
+					{
+						name: 'foo',
+						type: 'missing',
+						actual: null,
+						expected: {
+							name: 'foo',
+							color: 'ff0000'
+						}
+					},
+					{
+						name: 'pub',
+						type: 'changed',
+						actual: {
+							name: 'pub',
+							color: '00ff00'
+						},
+						expected: {
+							name: 'bar',
+							color: '00ff00'
+						}
+					},
+					{
+						name: 'baz',
+						type: 'changed',
+						actual: {
+							name: 'baz',
+							color: 'ffffff'
+						},
+						expected: {
+							name: 'baz',
+							color: '0000ff'
+						}
+					},
+					{
+						name: 'qux',
+						type: 'added',
+						actual: {
+							name: 'qux',
+							color: '000000'
+						},
+						expected: null
+					}
+				]);
+			});
+
+		});
+
+	});
+
+});
