@@ -18,6 +18,9 @@
     "sinon": "^1",
     "sinon-as-promised": "^4"
   },
+  "engines": {
+    "node": ">=4"
+  },
   "scripts": {
     "test": "npm run lint && npm run test-coverage",
     "test-unit": "NODE_ENV=test ./node_modules/.bin/mocha ./test/unit --recursive",
