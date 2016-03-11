@@ -1,0 +1,27 @@
+{
+  "name": "github-label-sync",
+  "version": "0.0.0",
+  "description": "Synchronise your GitHub labels",
+  "license": "MIT",
+  "main": "lib/github-label-sync.js",
+  "bin": "bin/github-label-sync.js",
+  "dependencies": {
+    "octonode": "~0.7"
+  },
+  "devDependencies": {
+    "eslint": "^2",
+    "istanbul": "~0.4",
+    "mocha": "^2",
+    "mockery": "^1",
+    "proclaim": "^3",
+    "sinon": "^1"
+  },
+  "scripts": {
+    "test": "npm run lint && npm run test-coverage",
+    "test-unit": "NODE_ENV=test ./node_modules/.bin/mocha ./test/unit --recursive",
+    "test-integration": "NODE_ENV=test ./node_modules/.bin/mocha ./test/integration",
+    "test-instrument": "NODE_ENV=test ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- ./test/unit --recursive",
+    "test-coverage": "npm run test-instrument && ./node_modules/.bin/istanbul check-coverage --statement 90 --branch 90 --function 90",
+    "lint": "./node_modules/.bin/eslint ."
+  }
+}
