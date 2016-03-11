@@ -1,0 +1,51 @@
+[
+	{
+		"name": "type: bug",
+		"color": "e11d21",
+		"aliases": [
+			"bug"
+		]
+	},
+	{
+		"name": "type: maintenance",
+		"color": "fbca04",
+		"aliases": [
+			"maintenance"
+		]
+	},
+	{
+		"name": "type: enhancement",
+		"color": "84b6eb",
+		"aliases": [
+			"enhancement",
+			"feature"
+		]
+	},
+	{
+		"name": "type: question",
+		"color": "cc317c",
+		"aliases": [
+			"question"
+		]
+	},
+	{
+		"name": "priority: low",
+		"color": "009800"
+	},
+	{
+		"name": "priority: medium",
+		"color": "fbca04"
+	},
+	{
+		"name": "priority: high",
+		"color": "eb6420"
+	},
+	{
+		"name": "priority: critical",
+		"color": "e11d21"
+	},
+	{
+		"name": "status: help wanted",
+		"color": "bfe5bf"
+	}
+]
