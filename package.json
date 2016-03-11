@@ -6,6 +6,7 @@
   "main": "lib/github-label-sync.js",
   "bin": "bin/github-label-sync.js",
   "dependencies": {
+    "chalk": "^1",
     "commander": "^2",
     "node.extend": "^1",
     "octonode": "~0.7"

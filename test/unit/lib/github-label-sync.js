@@ -57,16 +57,28 @@ describe('lib/github-label-sync', () => {
 			assert.isFalse(defaults.dryRun);
 		});
 
+		it('should have a `format` property', () => {
+			assert.isObject(defaults.format);
+		});
+
+		it('should have a `format.diff` method', () => {
+			assert.isFunction(defaults.format.diff);
+		});
+
+		it('should have a `format.success` method', () => {
+			assert.isFunction(defaults.format.success);
+		});
+
+		it('should have a `format.warning` method', () => {
+			assert.isFunction(defaults.format.warning);
+		});
+
 		it('should have a `labels` property', () => {
 			assert.isArray(defaults.labels);
 		});
 
 		it('should have a `log` property', () => {
 			assert.isObject(defaults.log);
-		});
-
-		it('should have a `log.error` method', () => {
-			assert.isFunction(defaults.log.error);
 		});
 
 		it('should have a `log.info` method', () => {

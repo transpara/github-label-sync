@@ -37,7 +37,7 @@ describe('lib/stringify-label-diff', () => {
 			});
 			stringifiedDiff = stringifyLabelDiff(labelDiff);
 			assert.lengthEquals(stringifiedDiff, 1);
-			assert.strictEqual(stringifiedDiff[0], 'The "foo" label is missing from the repo. It will be created.');
+			assert.strictEqual(stringifiedDiff[0], 'Missing: the "foo" label is missing from the repo. It will be created.');
 		});
 
 		it('should stringify "changed" diff entries', () => {
@@ -55,7 +55,7 @@ describe('lib/stringify-label-diff', () => {
 			});
 			stringifiedDiff = stringifyLabelDiff(labelDiff);
 			assert.lengthEquals(stringifiedDiff, 1);
-			assert.strictEqual(stringifiedDiff[0], 'The "foo" label in the repo is out of date. It will be updated to "bar" with color "#00ff00".');
+			assert.strictEqual(stringifiedDiff[0], 'Changed: the "foo" label in the repo is out of date. It will be updated to "bar" with color "#00ff00".');
 		});
 
 		it('should stringify "added" diff entries', () => {
@@ -70,7 +70,7 @@ describe('lib/stringify-label-diff', () => {
 			});
 			stringifiedDiff = stringifyLabelDiff(labelDiff);
 			assert.lengthEquals(stringifiedDiff, 1);
-			assert.strictEqual(stringifiedDiff[0], 'The "foo" label in the repo is not expected. It will be deleted.');
+			assert.strictEqual(stringifiedDiff[0], 'Added: the "foo" label in the repo is not expected. It will be deleted.');
 		});
 
 		it('should filter out invalid entries', () => {

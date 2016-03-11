@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+const chalk = require('chalk');
 const githubLabelSync = require('../lib/github-label-sync');
 const path = require('path');
 const pkg = require('../package.json');
@@ -41,20 +42,35 @@ let labels = [];
 try {
 	labels = require(program.labels);
 } catch (error) {
-	console.error(`No labels were found in ${program.labels}`);
+	console.error(chalk.red(`No labels were found in ${program.labels}`));
 	process.exit(1);
 }
+
+// Apply some log formatting
+const format = {
+	diff: (message) => {
+		return chalk.cyan(' > ') + message;
+	},
+	success: (message) => {
+		return chalk.green(message);
+	},
+	warning: (message) => {
+		return chalk.black.bgYellow(message);
+	}
+};
 
 // Pull together all the options
 const options = {
 	accessToken: program.accessToken,
 	dryRun: program.dryRun,
+	format: format,
 	labels: labels,
 	log: console,
 	repo: program.args[0]
 };
 
 // Sync the labels!
+console.log(chalk.cyan.underline(`Syncing labels for "${options.repo}"`));
 githubLabelSync(options).catch((error) => {
 	console.error(error.stack || error.message);
 	process.exit(1);
