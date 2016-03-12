@@ -25,6 +25,10 @@ program
 		'-d, --dry-run',
 		'calculate the required label changes but do not apply them'
 	)
+	.option(
+		'-A, --allow-added-labels',
+		'allow additional labels in the repo, and don\'t delete them'
+	)
 	.parse(process.argv);
 
 // Make sure we have exactly one argument – the repo
@@ -62,6 +66,7 @@ const format = {
 // Pull together all the options
 const options = {
 	accessToken: program.accessToken,
+	allowAddedLabels: program.allowAddedLabels,
 	dryRun: program.dryRun,
 	format: format,
 	labels: labels,

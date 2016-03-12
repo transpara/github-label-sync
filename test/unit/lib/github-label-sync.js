@@ -53,6 +53,10 @@ describe('lib/github-label-sync', () => {
 			assert.isNull(defaults.accessToken);
 		});
 
+		it('should have an `allowAddedLabels` property', () => {
+			assert.isFalse(defaults.allowAddedLabels);
+		});
+
 		it('should have a `dryRun` property', () => {
 			assert.isFalse(defaults.dryRun);
 		});
@@ -213,7 +217,7 @@ describe('lib/github-label-sync', () => {
 				assert.calledOnce(actionLabelDiff);
 				assert.isObject(actionLabelDiff.firstCall.args[0]);
 				assert.strictEqual(actionLabelDiff.firstCall.args[0].apiClient, apiClient);
-				assert.strictEqual(actionLabelDiff.firstCall.args[0].diff, labelDiff);
+				assert.deepEqual(actionLabelDiff.firstCall.args[0].diff, labelDiff);
 				assert.strictEqual(actionLabelDiff.firstCall.args[0].repo, options.repo);
 			});
 
@@ -227,7 +231,7 @@ describe('lib/github-label-sync', () => {
 			});
 
 			it('should resolve with the label diff', () => {
-				assert.strictEqual(resolvedValue, labelDiff);
+				assert.deepEqual(resolvedValue, labelDiff);
 			});
 
 		});
@@ -280,6 +284,47 @@ describe('lib/github-label-sync', () => {
 
 				it('should not execute any diff promises', () => {
 					assert.notCalled(Promise.all, labelDiffActions);
+				});
+
+			});
+
+		});
+
+		describe('when the `allowAddedLabels` option is `true`', () => {
+
+			beforeEach(() => {
+				labelDiff.push({
+					name: 'bar',
+					type: 'added',
+					actual: {
+						name: 'bar',
+						color: '00ff00'
+					},
+					expected: null
+				});
+				options.allowAddedLabels = true;
+				actionLabelDiff.reset();
+				stringifyLabelDiff.reset();
+				returnedPromise = githubLabelSync(options);
+			});
+
+			describe('.then()', () => {
+
+				beforeEach((done) => {
+					returnedPromise.then(() => {
+						done();
+					}).catch(done);
+				});
+
+				it('should not include "added" diffs in stringification', () => {
+					assert.calledOnce(stringifyLabelDiff);
+					assert.deepEqual(stringifyLabelDiff.firstCall.args[0], [labelDiff[0]]);
+				});
+
+				it('should not convert "added" diffs to promises', () => {
+					assert.calledOnce(actionLabelDiff);
+					assert.isObject(actionLabelDiff.firstCall.args[0]);
+					assert.deepEqual(actionLabelDiff.firstCall.args[0].diff, [labelDiff[0]]);
 				});
 
 			});
