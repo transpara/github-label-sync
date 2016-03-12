@@ -10,12 +10,15 @@
 		"name": "type: maintenance",
 		"color": "fbca04",
 		"aliases": [
-			"maintenance"
+			"maintenance",
+			"refactor",
+			"testing",
+			"test"
 		]
 	},
 	{
 		"name": "type: enhancement",
-		"color": "84b6eb",
+		"color": "009800",
 		"aliases": [
 			"enhancement",
 			"feature"
@@ -26,6 +29,13 @@
 		"color": "cc317c",
 		"aliases": [
 			"question"
+		]
+	},
+	{
+		"name": "type: documentation",
+		"color": "207de5",
+		"aliases": [
+			"documentation"
 		]
 	},
 	{
@@ -47,5 +57,19 @@
 	{
 		"name": "status: help wanted",
 		"color": "bfe5bf"
+	},
+	{
+		"name": "status: wontfix",
+		"color": "cccccc",
+		"aliases": [
+			"wontfix"
+		]
+	},
+	{
+		"name": "status: duplicate",
+		"color": "cccccc",
+		"aliases": [
+			"duplicate"
+		]
 	}
 ]
