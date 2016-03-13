@@ -240,6 +240,7 @@ describe('lib/github-label-sync', () => {
 
 			beforeEach(() => {
 				log.info.reset();
+				calculateLabelDiff.returns([]);
 				actionLabelDiff.returns([]);
 				returnedPromise = githubLabelSync(options);
 			});
