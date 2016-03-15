@@ -56,7 +56,10 @@
 	},
 	{
 		"name": "status: help wanted",
-		"color": "bfe5bf"
+		"color": "bfe5bf",
+		"aliases": [
+			"help wanted"
+		]
 	},
 	{
 		"name": "status: wontfix",
