@@ -2,7 +2,7 @@
 GitHub Label Sync
 =================
 
-Synchronise your GitHub labels.
+Synchronise your GitHub labels with as few destructive operations as possible – similar labels get renamed.
 
 [![NPM version](https://img.shields.io/npm/v/github-label-sync.svg)](https://www.npmjs.com/package/github-label-sync)
 [![Build status](https://img.shields.io/circleci/project/Financial-Times/github-label-sync.svg)](https://circleci.com/gh/Financial-Times/github-label-sync)

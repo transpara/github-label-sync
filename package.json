@@ -1,7 +1,13 @@
 {
   "name": "github-label-sync",
   "version": "0.0.0",
-  "description": "Synchronise your GitHub labels",
+  "description": "Synchronise your GitHub labels with as few destructive operations as possible",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/Financial-Times/github-label-sync.git"
+  },
+  "homepage": "https://github.com/Financial-Times/github-label-sync",
+  "bugs": "https://github.com/Financial-Times/github-label-sync/issues",
   "license": "MIT",
   "main": "lib/github-label-sync.js",
   "bin": "bin/github-label-sync.js",
