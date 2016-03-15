@@ -12,8 +12,8 @@ program
 	.version(pkg.version)
 	.usage('[options] <repository>')
 	.option(
-		'-a, --access-token <access-token>',
-		'a GitHub access token to make requests with',
+		'-a, --access-token <token>',
+		'a GitHub access token (also settable with a GITHUB_ACCESS_TOKEN environment variable)',
 		process.env.GITHUB_ACCESS_TOKEN
 	)
 	.option(
