@@ -71,5 +71,12 @@
 		"aliases": [
 			"duplicate"
 		]
+	},
+	{
+		"name": "status: blocked",
+		"color": "990000",
+		"aliases": [
+			"blocked"
+		]
 	}
 ]
