@@ -39,6 +39,13 @@
 		]
 	},
 	{
+		"name": "type: design",
+		"color": "eb6420",
+		"aliases": [
+			"design"
+		]
+	},
+	{
 		"name": "priority: low",
 		"color": "009800"
 	},
