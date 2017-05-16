@@ -1,6 +1,10 @@
 
 # Changelog
 
+## 1.2.1 (2017-05-16)
+
+  * Support repositories with a lot of labels
+
 ## 1.2.0 (2016-04-25)
 
   * Update the default label set
