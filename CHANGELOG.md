@@ -1,6 +1,10 @@
 
 # Changelog
 
+## 1.3.0 (2017-08-15)
+
+  * Support URLs in the `--labels` flag
+
 ## 1.2.1 (2017-05-16)
 
   * Support repositories with a lot of labels
