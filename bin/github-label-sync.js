@@ -29,6 +29,11 @@ program
 		'-A, --allow-added-labels',
 		'allow additional labels in the repo, and don\'t delete them'
 	)
+	.option(
+		'-e, --endpoint <url>',
+		'specify a GitHub enterprise installation',
+		undefined
+	)
 	.parse(process.argv);
 
 // Make sure we have exactly one argument – the repo
@@ -81,6 +86,7 @@ function resolveOptions() {
 			accessToken: program.accessToken,
 			allowAddedLabels: program.allowAddedLabels,
 			dryRun: program.dryRun,
+			endpoint: program.endpoint,
 			format: format,
 			labels: labels,
 			log: console,

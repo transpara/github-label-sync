@@ -179,7 +179,7 @@ describe('lib/github-label-sync', () => {
 
 		it('should create a githubLabelApi client with `options.accessToken`', () => {
 			assert.calledOnce(githubLabelApi);
-			assert.calledWithExactly(githubLabelApi.firstCall, options.accessToken);
+			assert.calledWithExactly(githubLabelApi.firstCall, options.accessToken, null);
 		});
 
 		it('should return a promise', function() {
