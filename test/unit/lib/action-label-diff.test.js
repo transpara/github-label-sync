@@ -42,7 +42,8 @@ describe('lib/action-label-diff', () => {
 				actual: null,
 				expected: {
 					name: 'foo',
-					color: '00ff00'
+					color: '00ff00',
+					description: 'baz'
 				}
 			});
 			actions = actionLabelDiff(options);
@@ -60,11 +61,13 @@ describe('lib/action-label-diff', () => {
 				type: 'changed',
 				actual: {
 					name: 'foo',
-					color: 'ff0000'
+					color: 'ff0000',
+					description: 'bar'
 				},
 				expected: {
 					name: 'foo',
-					color: '00ff00'
+					color: '00ff00',
+					description: 'baz'
 				}
 			});
 			actions = actionLabelDiff(options);
@@ -82,7 +85,8 @@ describe('lib/action-label-diff', () => {
 				type: 'added',
 				actual: {
 					name: 'foo',
-					color: 'ff0000'
+					color: 'ff0000',
+					description: 'bar'
 				},
 				expected: null
 			});

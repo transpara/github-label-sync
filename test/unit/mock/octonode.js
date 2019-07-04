@@ -7,6 +7,9 @@ module.exports = {
 		del: sinon.stub(),
 		get: sinon.stub(),
 		patch: sinon.stub(),
-		post: sinon.stub()
+		post: sinon.stub(),
+		requestDefaults: {
+			headers: {}
+		},
 	})
 };

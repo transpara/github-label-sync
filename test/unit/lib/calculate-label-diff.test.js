@@ -50,19 +50,51 @@ describe('lib/calculate-label-diff', () => {
 
 		});
 
+		describe('when a configured label with description does not exist in the current labels', () => {
+
+			beforeEach(() => {
+				currentLabels = [];
+				configuredLabels = [
+					{
+						name: 'bar',
+						color: '00ff00',
+						description: 'foo'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add a "missing" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'bar',
+					type: 'missing',
+					actual: null,
+					expected: {
+						name: 'bar',
+						color: '00ff00',
+						description: 'foo'
+					}
+				});
+			});
+
+		});
+
 		describe('when a configured label exists in the current labels with no changes', () => {
 
 			beforeEach(() => {
 				currentLabels = [
 					{
 						name: 'foo',
-						color: 'ff0000'
+						color: 'ff0000',
+						description: 'bar'
 					}
 				];
 				configuredLabels = [
 					{
 						name: 'foo',
-						color: 'ff0000'
+						color: 'ff0000',
+						description: 'bar'
 					}
 				];
 				diff = calculateLabelDiff(currentLabels, configuredLabels);
@@ -104,6 +136,110 @@ describe('lib/calculate-label-diff', () => {
 					expected: {
 						name: 'foo',
 						color: '00ff00'
+					}
+				});
+			});
+
+		});
+
+		describe('when a configured label with description exists in the current labels without description', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000',
+						description: 'bar'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add a "changed" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'foo',
+					type: 'changed',
+					actual: {
+						name: 'foo',
+						color: 'ff0000',
+						description: ''
+					},
+					expected: {
+						name: 'foo',
+						color: 'ff0000',
+						description: 'bar'
+					}
+				});
+			});
+
+		});
+
+		describe('when a configured label without description exists in the current labels with description', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000',
+						description: 'bar'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000'
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should not add an entry to the returned diff', () => {
+				assert.lengthEquals(diff, 0);
+			});
+
+		});
+
+		describe('when a configured label with empty description exists in the current labels with description', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000',
+						description: 'bar'
+					}
+				];
+				configuredLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000',
+						description: ''
+					}
+				];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add a "changed" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'foo',
+					type: 'changed',
+					actual: {
+						name: 'foo',
+						color: 'ff0000',
+						description: 'bar'
+					},
+					expected: {
+						name: 'foo',
+						color: 'ff0000',
+						description: ''
 					}
 				});
 			});
@@ -206,6 +342,36 @@ describe('lib/calculate-label-diff', () => {
 					actual: {
 						name: 'foo',
 						color: 'ff0000'
+					},
+					expected: null
+				});
+			});
+
+		});
+
+		describe('when a current label with description does not exist in the configured labels', () => {
+
+			beforeEach(() => {
+				currentLabels = [
+					{
+						name: 'foo',
+						color: 'ff0000',
+						description: 'bar'
+					}
+				];
+				configuredLabels = [];
+				diff = calculateLabelDiff(currentLabels, configuredLabels);
+			});
+
+			it('should add an "added" entry to the returned diff', () => {
+				assert.lengthEquals(diff, 1);
+				assert.deepEqual(diff[0], {
+					name: 'foo',
+					type: 'added',
+					actual: {
+						name: 'foo',
+						color: 'ff0000',
+						description: 'bar'
 					},
 					expected: null
 				});
