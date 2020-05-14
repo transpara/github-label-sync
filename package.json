@@ -15,6 +15,7 @@
     "chalk": "^1",
     "commander": "^2",
     "got": "^7.1.0",
+    "js-yaml": "^3.13.1",
     "node.extend": "^2.0.2",
     "octonode": "^0.9.5"
   },

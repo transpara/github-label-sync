@@ -2,10 +2,12 @@
 'use strict';
 
 const chalk = require('chalk');
+const fs = require('fs');
 const githubLabelSync = require('../lib/github-label-sync');
 const path = require('path');
 const pkg = require('../package.json');
 const program = require('commander');
+const yaml = require('js-yaml');
 
 // Command-line configuration
 program
@@ -47,21 +49,28 @@ function getLabelFiles(value, previous) {
 }
 
 function readLabels() {
+	const yamlRegex = /ya?ml$/ui;
 	if (program.labels.length === 0) {
 		program.labels = [ 'labels.json' ];
 	}
-
+	
 	const files = [];
-
+	
 	program.labels.forEach((file) => {
+		const isYaml = yamlRegex.test(file);
 		if (file.indexOf('http://') === 0 || file.indexOf('https://') === 0) {
 			const got = require('got');
 
-			files.push(got(file, { json: true }).then((response) => response.body).catch(() => {
-				console.error(chalk.red(`Downloading labels from ${file} failed`));
-				process.exit(1);
-			}));
-
+			const options = { json: !isYaml };
+			files.push(got(file, options)
+				.then((response) => {
+					return isYaml ? yaml.safeLoad(response.body): response.body;
+				})
+				.catch(() => {
+					console.error(chalk.red(`Downloading labels from ${file} failed`));
+					process.exit(1);
+				})
+			);
 		} else {
 			// Resolve the label configuration path
 			if (!/^[\/\~]/.test(file)) {
@@ -70,7 +79,14 @@ function readLabels() {
 
 			// Load the labels
 			try {
-				files.push(Promise.resolve(require(file)));
+				let result;
+				if (isYaml){
+					const resolvedPath = path.resolve(__dirname, file);
+					result = yaml.safeLoad(fs.readFileSync(resolvedPath, 'utf8'));
+				} else {
+					result = require(file);
+				}
+				files.push(Promise.resolve(result));
 			} catch (error) {
 				console.error(chalk.red(`No labels were found in ${file}`));
 				process.exit(1);
