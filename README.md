@@ -57,6 +57,12 @@ Run GitHub Label Sync using a different [label config file](#label-json):
 github-label-sync --access-token xxxxxx --labels my-labels.json myname/myrepo
 ```
 
+[Label config file](#label-json) can be also specified as YAML:
+
+```sh
+github-label-sync --access-token xxxxxx --labels my-labels.yml myname/myrepo
+```
+
 Perform a dry run, only making safe "read" requests to the GitHub API:
 
 ```sh
@@ -153,7 +159,9 @@ When the promise resolves successfully, its value will be set to a diff between 
 Label JSON
 ----------
 
-The labels to sync with are defined as an array in either JavaScript or JSON. The array must contain only label objects, which look like this:
+The labels to sync with are defined as an array in either JavaScript, JSON or YAML. The array must contain only label objects, which look like this:
+
+As JSON:
 
 ```json
 {
@@ -162,6 +170,15 @@ The labels to sync with are defined as an array in either JavaScript or JSON. Th
 	"aliases": [],
 	"description": "optional description"
 }
+```
+
+As YAML:
+
+```yaml
+- name: mylabel
+  color: "ff0000"
+  aliases: []
+  description: optional description
 ```
 
 The `name` property refers to the label name and the `color` property should be set to the color of the label as a hex code without the leading `#`.
@@ -181,7 +198,7 @@ For example, given the following config, GitHub Label Sync will look for labels 
 }
 ```
 
-You can find a [full example label configuration](labels.json) in this repository.
+You can find a full example label configuration in this repository ([JSON](labels.json) / [YAML](labels.yml)).
 
 
 Configuration
@@ -246,7 +263,7 @@ githubLabelSync({
 });
 ```
 
-On the command-line this can be set with the `labels` flag which should point to a JSON file.
+On the command-line this can be set with the `labels` flag which should point to a JSON or YAML file.
 
 ### `repo`
 
