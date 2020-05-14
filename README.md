@@ -9,7 +9,7 @@ Table Of Contents
 - [Requirements](#requirements)
 - [Command-Line Interface](#command-line-interface)
 - [JavaScript Interface](#javascript-interface)
-- [Label JSON](#label-json)
+- [Label Config File](#label-config-file)
 - [Configuration](#configuration)
 - [Contributing](#contributing)
 - [License](#license)
@@ -45,19 +45,19 @@ Options:
   -A, --allow-added-labels    allow additional labels in the repo, and don't delete them
 ```
 
-Run GitHub Label Sync on a repo (reading [label data](#label-json) from a local `labels.json`):
+Run GitHub Label Sync on a repo (reading [label data](#label-config-file) from a local `labels.json`):
 
 ```sh
 github-label-sync --access-token xxxxxx myname/myrepo
 ```
 
-Run GitHub Label Sync using a different [label config file](#label-json):
+Run GitHub Label Sync using a different [label config file](#label-config-file):
 
 ```sh
 github-label-sync --access-token xxxxxx --labels my-labels.json myname/myrepo
 ```
 
-[Label config file](#label-json) can be also specified as YAML:
+[Label config file](#label-config-file) can be also specified as YAML:
 
 ```sh
 github-label-sync --access-token xxxxxx --labels my-labels.yml myname/myrepo
@@ -156,7 +156,7 @@ When the promise resolves successfully, its value will be set to a diff between 
 ```
 
 
-Label JSON
+Label Config File
 ----------
 
 The labels to sync with are defined as an array in either JavaScript, JSON or YAML. The array must contain only label objects, which look like this:
@@ -223,7 +223,7 @@ GITHUB_ACCESS_TOKEN=xxxxxx github-label-sync
 
 ### `allowAddedLabels`
 
-_Boolean_. Whether to allow labels on GitHub which are not specified in your [label config](#label-json). If `true`, they are allowed and will be left alone. If `false`, they will be deleted. Default: `false`.
+_Boolean_. Whether to allow labels on GitHub which are not specified in your [label config](#label-config-file). If `true`, they are allowed and will be left alone. If `false`, they will be deleted. Default: `false`.
 
 ```js
 githubLabelSync({
@@ -255,7 +255,7 @@ github-label-sync --dry-run
 
 ### `labels`
 
-_Array_. Your label configuration. See the section on [label JSON](#label-json).
+_Array_. Your label configuration. See the section on [label config file](#label-config-file).
 
 ```js
 githubLabelSync({
